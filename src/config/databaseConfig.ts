@@ -1,28 +1,11 @@
-import mysql from 'mysql2/promise';
+import mysql from 'mysql2';
 
-
-const pool = mysql.createPool({
+const pool = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    database: process.env.DB_NAME
+
 });
 
-// Create a function to execute SQL queries
-async function executeQuery(sql: string, params = []) {
-    const connection = await pool.getConnection();
-    try {
-        const [rows] = await connection.query(sql, params);
-        return rows;
-    } catch (error) {
-        console.error('Error executing query:', error);
-        throw error;
-    } finally {
-        connection.release();
-    }
-}
-
-export default executeQuery;
+export default pool;
