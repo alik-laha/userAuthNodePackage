@@ -1,1 +1,4 @@
-import mysql from "mysql2"
+import executeQuery from "../config/databaseConfig";
+import { user } from "../globalType/type";
+
+
