@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import SendEmail from "../../helper/mailer.js";
+import jwt from "jsonwebtoken";
 
 const Signup = async (req: Request, res: Response) => {
     const { name, email, password, confirmPass } = req.body;
@@ -22,7 +23,13 @@ const Signup = async (req: Request, res: Response) => {
         if (newUser) {
             const Mail = await SendEmail({ email, id });
             if (Mail) {
-                return res.status(201).json({ message: 'User created successfully' });
+                jwt.sign({ id: id }, process.env.JWT_SECRET!, { expiresIn: '1h' }, (err, token) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Server error' });
+                    }
+                    res.cookie('token', token, { httpOnly: true });
+                    return res.status(201).json({ message: 'User created successfully' });
+                });
             }
             else {
                 await User.destroy({ where: { email: email } });
