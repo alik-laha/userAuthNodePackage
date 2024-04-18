@@ -33,3 +33,5 @@ export const sendEmail = async ({ email, id }: email) => {
 
 }
 
+export default sendEmail;
+
