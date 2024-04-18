@@ -7,5 +7,7 @@ export interface user {
     name: string,
     email: string,
     phoneNo: string,
-    password: string
+    password: string,
+    confirm: boolean,
+    id: string
 }
