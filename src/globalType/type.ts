@@ -8,5 +8,4 @@ export interface user {
     email: string,
     phoneNo: string,
     password: string
-
 }
