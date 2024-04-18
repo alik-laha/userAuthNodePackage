@@ -1,7 +1,7 @@
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 
-const con = mysql.createPool({
+const dbConfig = mysql.createConnection({
     connectionLimit: 10,
     waitForConnections: true,
     host: process.env.DB_HOST,
@@ -11,5 +11,12 @@ const con = mysql.createPool({
     timezone: 'UTC+5.30'
 });
 
+dbConfig.connect((err) => {
+    if (err) {
+        console.log("Error in connection", err)
+    } else {
+        console.log("Database connected")
+    }
+})
 
-module.exports = con;
+export default dbConfig;
